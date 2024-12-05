@@ -36,14 +36,20 @@ public class CreatorManager implements CreatorService {
                         creatorMapper.fromCreatorDtoNewToCreator(CreatorDtoNew)));
     }
     @Override
-    public Creator updateCreator(Long id, Creator creator) {
+    public CreatorDto updateCreator(Long id, CreatorDto creatorDto) {
+        Creator creator = creatorMapper.fromCreatorDtoToCreator(creatorDto);
         creator.setId(id);
-        return creatorRepository.save(creator);
+        Creator updatedCreator = creatorRepository.save(creator);
+        return creatorMapper.fromCreatorToCreatorDto(updatedCreator);
     }
 
     @Override
     public void deleteCreator(Long id) {
-        creatorRepository.deleteById(id);
+        try{
+            creatorRepository.deleteById(id);
+        }catch (Exception e){
+            throw new RuntimeException("erreur dans la suppression du createur avec l'id: "+ id, e);
+        }
     }
 
 }

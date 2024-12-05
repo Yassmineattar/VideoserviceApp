@@ -10,6 +10,6 @@ public interface CreatorService {
     List<CreatorDto> getAllCreators();
     CreatorDto getCreatorById(Long id);
     CreatorDto addCreator(CreatorDtoNew creatorDtoNew);
-    Creator updateCreator(Long id, Creator creator);
+    CreatorDto updateCreator(Long id, CreatorDto creatorDto);
     void deleteCreator(Long id);
 }

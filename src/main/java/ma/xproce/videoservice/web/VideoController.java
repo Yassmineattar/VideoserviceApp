@@ -1,5 +1,6 @@
 package ma.xproce.videoservice.web;
 import ma.xproce.videoservice.dto.VideoDto;
+import ma.xproce.videoservice.dto.VideoDtoNew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,11 +31,11 @@ public class VideoController {
                                @RequestParam(name = "name") String name,
                                @RequestParam(name = "url") String url,
                                @RequestParam(name = "description") String description) {
-        Video video = new Video();
-        video.setName(name);
-        video.setUrl(url);
-        video.setDescription(description);
-        videoManager.addVideo(video);
+        VideoDtoNew newVideo = new VideoDtoNew();
+        newVideo.setName(name);
+        newVideo.setUrl(url);
+        newVideo.setDescription(description);
+        videoManager.addVideo(newVideo);
         return getAllVideos(model);
     }
     @GetMapping("/editVideo/{id}")
@@ -49,11 +50,11 @@ public class VideoController {
                               @RequestParam(name = "name") String name,
                               @RequestParam(name = "url") String url,
                               @RequestParam(name = "description") String description) {
-        VideoDto video = videoManager.getVideoById(id);
-        video.setName(name);
-        video.setUrl(url);
-        video.setDescription(description);
-        videoManager.updateVideo(id, video);
+        VideoDto updatedVideo = new VideoDto();
+        updatedVideo.setName(name);
+        updatedVideo.setUrl(url);
+        updatedVideo.setDescription(description);
+        videoManager.updateVideo(id, updatedVideo);
         return getAllVideos(model);
     }
     @GetMapping("/deleteVideo/{id}")

@@ -10,6 +10,6 @@ public interface VideoService {
     List<VideoDto> getAllVideos();
     VideoDto getVideoById(Long id);
     VideoDto addVideo(VideoDtoNew video);
-    Video updateVideo(Long id, Video video);
+    VideoDto updateVideo(Long id, VideoDto videoDto);
     void deleteVideo(Long id);
 }

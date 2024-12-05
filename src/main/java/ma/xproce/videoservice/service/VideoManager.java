@@ -1,6 +1,8 @@
 package ma.xproce.videoservice.service;
+import ma.xproce.videoservice.dao.entities.Creator;
 import ma.xproce.videoservice.dao.entities.Video;
 import ma.xproce.videoservice.dao.repositories.VideoRepository;
+import ma.xproce.videoservice.dto.CreatorDto;
 import ma.xproce.videoservice.dto.VideoDto;
 import ma.xproce.videoservice.dto.VideoDtoNew;
 import ma.xproce.videoservice.mapper.VideoMapper;
@@ -36,14 +38,20 @@ public class VideoManager implements VideoService {
                         videoMapper.fromVideoDtoNewToVideo(VideoDtoNew)));
     }
     @Override
-    public Video updateVideo(Long id, Video video) {
+    public VideoDto updateVideo(Long id, VideoDto videoDto) {
+        Video video = videoMapper.fromVideoDtoToVideo(videoDto);
         video.setId(id);
-        return videoRepository.save(video);
+        Video updatedVideo = videoRepository.save(video);
+        return videoMapper.fromVideoToVideoDto(updatedVideo);
     }
 
     @Override
     public void deleteVideo(Long id) {
+        try{
         videoRepository.deleteById(id);
+        }catch (Exception e){
+            throw new RuntimeException("erreur dans la suppression du video avec l'id: "+ id, e);
+        }
     }
 
 }
