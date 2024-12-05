@@ -1,4 +1,5 @@
 package ma.xproce.videoservice.web;
+import ma.xproce.videoservice.dto.VideoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,7 @@ public class VideoController {
     private VideoManager videoManager;
     @GetMapping("/getVideosList")
     public String getAllVideos(Model model) {
-        List<Video> videos = videoManager.getAllVideos();
+        List<VideoDto> videos = videoManager.getAllVideos();
         model.addAttribute("listVideos", videos);
         return "listVideos";
     }
@@ -38,7 +39,7 @@ public class VideoController {
     }
     @GetMapping("/editVideo/{id}")
     public String editVideoForm(Model model, @PathVariable Long id) {
-        Video video = videoManager.getVideoById(id);
+        VideoDto video = videoManager.getVideoById(id);
         model.addAttribute("video", video);
         return "editVideo";  // Vue de formulaire pour la modification
     }
@@ -48,7 +49,7 @@ public class VideoController {
                               @RequestParam(name = "name") String name,
                               @RequestParam(name = "url") String url,
                               @RequestParam(name = "description") String description) {
-        Video video = videoManager.getVideoById(id);
+        VideoDto video = videoManager.getVideoById(id);
         video.setName(name);
         video.setUrl(url);
         video.setDescription(description);

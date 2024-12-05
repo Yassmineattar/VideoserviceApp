@@ -3,6 +3,7 @@ import ma.xproce.videoservice.dao.entities.Creator;
 import ma.xproce.videoservice.dao.entities.Video;
 import ma.xproce.videoservice.dao.repositories.CreatorRepository;
 import ma.xproce.videoservice.dao.repositories.VideoRepository;
+import ma.xproce.videoservice.dto.VideoDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class VideoServiceIntegrationTest {
         creator = creatorRepository.save(creator);
         Video video = new Video(null, "Test Video", "http://example.com", "Test Description", creator);
         videoService.addVideo(video);
-        List<Video> videos = videoService.getAllVideos();
+        List<VideoDto> videos = videoService.getAllVideos();
         assertEquals(1, videos.size());
         assertEquals("Test Video", videos.get(0).getName());
         assertEquals("Test Creator", videos.get(0).getCreator().getName());

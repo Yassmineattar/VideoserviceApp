@@ -1,34 +1,49 @@
 package ma.xproce.videoservice.service;
-import jakarta.transaction.Transactional;
 import ma.xproce.videoservice.dao.entities.Video;
 import ma.xproce.videoservice.dao.repositories.VideoRepository;
+import ma.xproce.videoservice.dto.VideoDto;
+import ma.xproce.videoservice.dto.VideoDtoNew;
+import ma.xproce.videoservice.mapper.VideoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
-public class VideoManager implements VideoService{
+public class VideoManager implements VideoService {
     @Autowired
     private VideoRepository videoRepository;
+    @Autowired
+    VideoMapper videoMapper;
     @Override
-    public List<Video> getAllVideos() {
-        return videoRepository.findAll();
+    public List<VideoDto> getAllVideos() {
+        return videoRepository.findAll()
+                .stream()
+                .map(videoMapper::fromVideoToVideoDto)
+                .collect(Collectors.toList());
     }
     @Override
-    public Video getVideoById(Long id) {
-        return videoRepository.findById(id).orElse(null);
+    public VideoDto getVideoById(Long id) {
+        return videoMapper.fromVideoToVideoDto(videoRepository.findById(id).get());
     }
-    @Transactional
+
     @Override
-    public Video addVideo(Video video) {
-        return videoRepository.save(video);
+    public VideoDto addVideo(VideoDtoNew VideoDtoNew) {
+
+        return videoMapper.fromVideoToVideoDto(
+                videoRepository.save(
+                        videoMapper.fromVideoDtoNewToVideo(VideoDtoNew)));
     }
     @Override
     public Video updateVideo(Long id, Video video) {
         video.setId(id);
         return videoRepository.save(video);
     }
+
     @Override
     public void deleteVideo(Long id) {
         videoRepository.deleteById(id);
     }
+
 }
